@@ -3,7 +3,7 @@ from contextlib import closing
 from support import services, library
 
 import support.titleformat as tf
-from xbmcswift2 import xbmcgui, actions, xbmc, abort_requested
+from xbmcswift2 import sleep, xbmcgui, actions, xbmc, abort_requested
 from lostfilm.scraper import Episode, Series, Quality, LostFilmScraper
 from support.torrent import TorrentFile
 from support.common import lang, date_to_str, singleton, save_files, purge_temp_dir, LocalizedError, \
@@ -11,8 +11,8 @@ from support.common import lang, date_to_str, singleton, save_files, purge_temp_
 from support.plugin import plugin
 
 
-BATCH_EPISODES_COUNT = 5
-BATCH_SERIES_COUNT = 20
+BATCH_EPISODES_COUNT = 1
+BATCH_SERIES_COUNT = 1
 LIBRARY_ITEM_COLOR = "FFFFFB8B"
 NEW_LIBRARY_ITEM_COLOR = "lime"
 
@@ -347,6 +347,7 @@ def update_library():
         series_episodes = {}
         for ids in batch(series_ids, BATCH_SERIES_COUNT):
             series_episodes.update(scraper.get_series_episodes_bulk(ids))
+            sleep(2000)
             processed += len(ids)
             progress.update(processed * 100 / total)
             if abort_requested():

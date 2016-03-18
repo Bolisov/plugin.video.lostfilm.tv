@@ -11,7 +11,7 @@ from requests import RequestException, Timeout
 import os
 import pickle
 import logging
-
+import time
 
 class ScraperError(LocalizedError):
     pass
@@ -44,8 +44,9 @@ class AbstractScraper(object):
                 self.cookie_str = new_cookie_str
 
     def fetch(self, url, params=None, data=None, **request_params):
-        try:
+        try:            
             with Timer(logger=self.log, name='Fetching URL %s with params %r' % (url, params)):
+                time.sleep(1)
                 response = self.session.request('post' if data else 'get',
                                                 url, params=params, data=data,
                                                 **request_params)
